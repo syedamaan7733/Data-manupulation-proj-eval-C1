@@ -616,7 +616,7 @@ const ratings = [
 
 const displayContainer = document.getElementById("display-product");
 
-displayProduct(products);
+// displayProduct(products);
 
 // function for displaying product
 function displayProduct(products) {
@@ -627,26 +627,24 @@ function displayProduct(products) {
   });
 }
 
-function createCard(element) {
+function createCard(data) {
   let card = document.createElement("div");
   card.classList.add("card");
 
   //   Sliding image functionality
-  const productImg = element.images.filter((ele) => ele.length > 0);
+  const productImg = data.images.filter((ele) => ele.length > 0);
+  //   console.log(data);
 
-  //   let curIndexImage = 0;
+  let curIndexImage = 0;
 
-  //   const silderImg = document.getElementById("sliderImg");
-  //   const nextBtn = document.getElementById("next-btn");
-  //   const prevBtn = document.getElementById("prev-btn");
+  const silderImg = document.getElementById("sliderImg");
+  const nextBtn = document.getElementById("next-btn");
+  const prevBtn = document.getElementById("prev-btn");
 
-  //   function updateImage() {
-  //     silderImg.src = productImg[curIndexImage];
-  //   }
-  //   prevBtn.addEventListener("click", () => {
-  //     curIndexImage = (curIndexImage - 1 + productImg.length) % productImg.length;
-  //     updateImage();
-  //   });
+  function updateImage() {
+    silderImg.src = productImg[curIndexImage];
+  }
+  //   prevBtn.addEventListener("click", goImgLeft(productImg));
   //   nextBtn.addEventListener("click", () => {
   //     curIndexImage = (curIndexImage + 1) % productImg.length;
   //     updateImage();
@@ -659,12 +657,13 @@ function createCard(element) {
                 <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" alt="" id="sliderImg">
                 <button id="next-btn" class="next-btn"><i class="fa-solid fa-angle-right"></i></button>
             </div>
-            <h2 id="title-prod">Air Purifier for HOme</h2>
-            <h2 class="og-rpice">$ 89.99</h2>
-            <p class="strikePrice">$129.99</p>
+            
+            <h2 id="title-prod">${data.title}</h2>
+            <h2 class="og-rpice">$${data.price}</h2>
+            <p class="strikePrice">$${data.strikePrice}</p>
             <div class="quant-category">
-                <p>Home Appllicance</p>
-                <p>Quantitiy: 60</p>
+                <p>${data.category}</p>
+                <p>Quantitiy: ${data.quantity}</p>
             </div>
             <div class="rating-links">
                 <p>Rating: 4.6</p>
@@ -673,3 +672,16 @@ function createCard(element) {
     `;
   return card;
 }
+
+// filter by category
+const filterCategory = document.getElementById("category_list");
+
+function displayFilteredProduct() {
+  const category = filterCategory.value;
+  const filteredProducts = products.filter(
+    (product) => !category || product.category === category
+  );
+  displayProduct(filteredProducts);
+}
+
+filterCategory.addEventListener("change", displayFilteredProduct);
