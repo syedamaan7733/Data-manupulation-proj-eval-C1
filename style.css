@@ -77,12 +77,13 @@
     align-items: center;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
     padding: 1em;
+    border-radius:12px
 }
 .slide{
     display: flex;
     align-items: center;
 }
-#sliderImg{
+.sliderImg{
     width: 280px;
     min-width: 280px;
     height: 300px;
@@ -138,4 +139,15 @@
     /* border: .4px solid rgb(112, 112, 112); */
     width: 300px;
 
+}
+.add-to-cart{
+    margin-top: .6em;
+    background-color: black;
+    color:aliceblue;
+    width: 100%;
+    padding: .6em;
+    border-radius: 3px;
+}
+.add-to-cart:hover{
+    background-color: rgb(53, 53, 53);
 }

@@ -1,8 +1,32 @@
 // slider functionality
-const img = [
-  "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-  "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-];
+// const productImg = [
+//   "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+//   "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+// ];
+
+// const sliderImg = document.getElementById("sliderImg");
+// const nextBtn = document.getElementById("next-btn");
+// const prevBtn = document.getElementById("prev-btn");
+
+// let curIndexImage = 0; // Initialize the current image index
+// // const productImg = ["img1.jpg", "img2.jpg", "img3.jpg"]; // Array of product image sources
+
+// function updateImage() {
+//   sliderImg.src = productImg[curIndexImage];
+// }
+
+// prevBtn.addEventListener("click", () => {
+//   curIndexImage = (curIndexImage - 1 + productImg.length) % productImg.length; // Decrease index, wrap around if needed
+//   updateImage();
+// });
+
+// nextBtn.addEventListener("click", () => {
+//   curIndexImage = (curIndexImage + 1) % productImg.length; // Increase index, wrap around if needed
+//   updateImage();
+// });
+
+// // Initialize the first image
+// updateImage();
 
 // ------------------------------------------------------------------------------------
 // display rroduct fnctionality
@@ -616,14 +640,45 @@ const ratings = [
 
 const displayContainer = document.getElementById("display-product");
 
-// displayProduct(products);
+displayProduct(products);
 
 // function for displaying product
 function displayProduct(products) {
   displayContainer.innerHTML = "";
-  products.forEach((element) => {
-    const card = createCard(element);
+  products.forEach((data) => {
+    const card = createCard(data);
     displayContainer.appendChild(card);
+
+    // ------------------------------------------------------------------
+    // Sliding functionality
+    const sliderImg = document.getElementById(`sliderImg${data.id}`);
+    const nextBtn = document.getElementById(`next-btn${data.id}`);
+    const prevBtn = document.getElementById(`prev-btn${data.id}`);
+
+    let curIndexImage = 0; // Initialize the current image index
+    const productImg = data.images.filter((ele) => ele.length > 0);
+    function updateImage() {
+      sliderImg.src = productImg[curIndexImage];
+    }
+
+    prevBtn.addEventListener("click", () => {
+      curIndexImage =
+        (curIndexImage - 1 + productImg.length) % productImg.length; // Decrease index, wrap around if needed
+      updateImage();
+    });
+
+    nextBtn.addEventListener("click", () => {
+      curIndexImage = (curIndexImage + 1) % productImg.length; // Increase index, wrap around if needed
+      updateImage();
+    });
+    // -------------------------------------
+    // Cart counter functonality
+    const AddCartBtn = document.getElementById(`add_to_card${data.id}`);
+    const counter = document.getElementById("cart_counter");
+    let count = 1;
+    AddCartBtn.addEventListener("click", () => {
+      counter.innerText = count++;
+    });
   });
 }
 
@@ -632,30 +687,16 @@ function createCard(data) {
   card.classList.add("card");
 
   //   Sliding image functionality
-  const productImg = data.images.filter((ele) => ele.length > 0);
-  //   console.log(data);
 
-  let curIndexImage = 0;
-
-  const silderImg = document.getElementById("sliderImg");
-  const nextBtn = document.getElementById("next-btn");
-  const prevBtn = document.getElementById("prev-btn");
-
-  function updateImage() {
-    silderImg.src = productImg[curIndexImage];
-  }
-  //   prevBtn.addEventListener("click", goImgLeft(productImg));
-  //   nextBtn.addEventListener("click", () => {
-  //     curIndexImage = (curIndexImage + 1) % productImg.length;
-  //     updateImage();
-  //   });
+  // Initialize the first image
+  // updateImage();
 
   //   adding element
   card.innerHTML = `
     <div class="slide">
-                <button id="prev-btn" class="prev-btn"><i class="fa-solid fa-angle-left"></i></button>
-                <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" alt="" id="sliderImg">
-                <button id="next-btn" class="next-btn"><i class="fa-solid fa-angle-right"></i></button>
+                <button id="prev-btn${data.id}" class="prev-btn"><i class="fa-solid fa-angle-left"></i></button>
+                <img src="https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg" alt="" class="sliderImg" id="sliderImg${data.id}">
+                <button id="next-btn${data.id}" class="next-btn"><i class="fa-solid fa-angle-right"></i></button>
             </div>
             
             <h2 id="title-prod">${data.title}</h2>
@@ -669,12 +710,15 @@ function createCard(data) {
                 <p>Rating: 4.6</p>
                 <a href="#">see detail</a>
             </div>
+            <button id="add_to_card${data.id}" class="add-to-cart">ADD TO CART</button>
     `;
+
   return card;
 }
 
 // filter by category
 const filterCategory = document.getElementById("category_list");
+const sortFilter = document.getElementById("sort-list");
 
 function displayFilteredProduct() {
   const category = filterCategory.value;
@@ -684,4 +728,22 @@ function displayFilteredProduct() {
   displayProduct(filteredProducts);
 }
 
+function displaySortedProducts() {
+  const sortParam = sortFilter.value;
+  const sortedProduct = [...products];
+  console.log(sortedProduct);
+
+  if (sortParam === "low-to-high") {
+    sortedProduct.sort((a, b) => a.price - b.price);
+  } else if (sortParam === "high-to-low") {
+    sortedProduct.sort((a, b) => b.price - a.price);
+  } else if (sortParam === "A-to-Z") {
+    sortedProduct.sort((a, b) => a.title.localeCompare(b.title));
+  } else if (sortParam === "Z-to-A") {
+    sortedProduct.sort((a, b) => b.title.localeCompare(a.title));
+  }
+  displayProduct(sortedProduct);
+}
+
 filterCategory.addEventListener("change", displayFilteredProduct);
+sortFilter.addEventListener("change", displaySortedProducts);
