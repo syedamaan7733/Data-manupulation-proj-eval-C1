@@ -1,32 +1,3 @@
-// slider functionality
-// const productImg = [
-//   "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-//   "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-// ];
-
-// const sliderImg = document.getElementById("sliderImg");
-// const nextBtn = document.getElementById("next-btn");
-// const prevBtn = document.getElementById("prev-btn");
-
-// let curIndexImage = 0; // Initialize the current image index
-// // const productImg = ["img1.jpg", "img2.jpg", "img3.jpg"]; // Array of product image sources
-
-// function updateImage() {
-//   sliderImg.src = productImg[curIndexImage];
-// }
-
-// prevBtn.addEventListener("click", () => {
-//   curIndexImage = (curIndexImage - 1 + productImg.length) % productImg.length; // Decrease index, wrap around if needed
-//   updateImage();
-// });
-
-// nextBtn.addEventListener("click", () => {
-//   curIndexImage = (curIndexImage + 1) % productImg.length; // Increase index, wrap around if needed
-//   updateImage();
-// });
-
-// // Initialize the first image
-// updateImage();
 
 // ------------------------------------------------------------------------------------
 // display rroduct fnctionality
@@ -636,14 +607,32 @@ const ratings = [
   },
 ];
 
+
+// ------------------------------------------------------------------------------
+// post login functionaity
+//-------------------------------------------------------------------------------
+
+const loggedIn = JSON.parse(localStorage.getItem("login-session"))
+
+if(loggedIn){
+  const greet = document.createElement("p")
+  greet.innerText = `Hello! ${loggedIn.username}`
+  document.querySelector(".cart-btn").appendChild(greet)
+}
+
+
+
 // Taking all elements variavle
 
 const displayContainer = document.getElementById("display-product");
+const counter = document.getElementById("cart_counter");
 
 displayProduct(products);
 
 // function for displaying product
 function displayProduct(products) {
+  counter.innerText = localStorage.getItem("counter") || 0;
+
   displayContainer.innerHTML = "";
   products.forEach((data) => {
     const card = createCard(data);
@@ -671,13 +660,21 @@ function displayProduct(products) {
       curIndexImage = (curIndexImage + 1) % productImg.length; // Increase index, wrap around if needed
       updateImage();
     });
+
     // -------------------------------------
     // Cart counter functonality
     const AddCartBtn = document.getElementById(`add_to_card${data.id}`);
     const counter = document.getElementById("cart_counter");
-    let count = 1;
+
+    let count = localStorage.getItem("counter") || 1;
     AddCartBtn.addEventListener("click", () => {
-      counter.innerText = count++;
+
+      // if not logged in this will redirect you to login paages
+      if(!loggedIn) window.location.href = "./pages/login.html"
+
+
+      localStorage.setItem("counter", count++);
+      counter.innerText = localStorage.getItem("counter");
     });
   });
 }
@@ -685,11 +682,6 @@ function displayProduct(products) {
 function createCard(data) {
   let card = document.createElement("div");
   card.classList.add("card");
-
-  //   Sliding image functionality
-
-  // Initialize the first image
-  // updateImage();
 
   //   adding element
   card.innerHTML = `
@@ -747,3 +739,5 @@ function displaySortedProducts() {
 
 filterCategory.addEventListener("change", displayFilteredProduct);
 sortFilter.addEventListener("change", displaySortedProducts);
+
+

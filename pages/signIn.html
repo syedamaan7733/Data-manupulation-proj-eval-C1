@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://kit.fontawesome.com/90b32dcee6.js" crossorigin="anonymous"></script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+</style>
+<style>
+        *{
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "poppins";
+    }
+    body{
+        border: 1px solid red;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #signIn-sumbit{
+        display: flex;
+        flex-direction: column;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding: 2em;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+    #signIn-sumbit h2{
+        text-align: center;
+        margin-bottom: 1em;
+    }
+    button{
+        margin-top: 1em;
+        background-color: black;
+        color: white;
+        font-weight: 700;
+        border-radius: inherit;
+        padding: .5em 1em;
+        margin-bottom: .4em;
+    }
+    input{
+        margin-bottom: .5em;
+    }
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form  id="signIn-sumbit">
+        <h2>Sig In</h2>
+        <label for="name">name</label>
+        <input type="name" id="name" placeholder="enter your name">
+        <label for="email">email</label>
+        <input type="email" id="email" placeholder="enter your email">
+        <label for="password">password</label>
+        <input type="text" placeholder="enter your password" id="password">
+        <button type="submit" id="login-btn">SignIn</button>
+        <p>Already have an account?<a href="./login.html">LogInin</a></p>
+    </form>
+
+<script>
+    const subSign = document.getElementById("signIn-sumbit")
+
+    subSign.addEventListener("submit", (e) =>{
+        e.preventDefault()
+
+        const name = document.querySelector("#name")
+        const email = document.querySelector("#email")
+        const password = document.querySelector("#password")
+
+        if(!name.value){
+            alert("please provide your name")
+            return    }
+        else if (!email.value){
+            alert("plase provide your email")
+            return
+        }
+        else if (!email.value.includes(".com")){
+            alert("invalid  email.")
+            return
+        }
+        else if (!password.value){
+            alert("please enter your passwortd")
+            return
+        }
+        if (password.value.length < 8){
+            alert("password must be 8 character")
+            return
+        }
+
+        const Users = JSON.parse(localStorage.getItem("Users")) || []
+        const user = {
+            id : Users.length + 1 || 1,
+            name: name.value,
+            email: email.value,
+            password: password.value
+        }
+        const isEmailExisit = Users.find((ele) =>  ele.email === user.email ) 
+        if (isEmailExisit) return alert("email alredy exisit.Please login")
+
+        Users.push(user)
+        localStorage.setItem("Users",JSON.stringify(Users))
+        alert("User Signed up please login")
+        window.location.href = "./login.html"
+        
+
+                                                                                                                                                                                       
+    })
+</script>
+</body>
+</html>

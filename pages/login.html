@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://kit.fontawesome.com/90b32dcee6.js" crossorigin="anonymous"></script>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+</style>
+<style>
+    *{
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "poppins";
+    }
+    body{
+        border: 1px solid red;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    #login-user{
+        display: flex;
+        flex-direction: column;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        padding: 2em;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+    #login-user h3{
+        text-align: center;
+        margin-bottom: 1em;
+    }
+    button{
+        margin-top: 2em;
+        background-color: black;
+        color: white;
+        font-weight: 700;
+        border-radius: inherit;
+        padding: .5em 1em;
+    }
+
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="login-user" class="login-user">
+        <h3>Log In</h3>
+        <label for="email">email</label>
+        <input type="email" id="email" placeholder="enter your email">
+        <label for="password">password</label>
+        <input type="text" placeholder="enter your password" id="password">
+        <button type="submit" id="login-btn">Login</button>
+        <p>create your account <a href="./signIn.html">signin</a></p>
+    </form>
+
+<script>
+    const Sublogin = document.querySelector("#login-user")
+    // adding eventlistener which wil get triggers when me click the button 
+    Sublogin.addEventListener("submit", (e) => {
+        e.preventDefault()
+
+        //getting the existing user from the local storage
+        const Users = JSON.parse(localStorage.getItem("Users")) || alert("No user avaliable")
+        //acqire input
+        const nameVal = document.querySelector("#email").value;
+        const passVal = document.querySelector("#password").value;
+
+            // valiadting email
+        if(!nameVal.includes(".com") || !nameVal.includes("@")){
+            alert("Invalid email")
+            return
+        }
+
+        // search if input email is in USers object
+        const isUserExisit = Users.find((user) => user.email == nameVal)
+        if(!isUserExisit) return alert("no user with this email")
+
+        if(isUserExisit.password !== passVal) return alert("incorrect")
+
+        //if eveything will be alright the login session will be created
+        localStorage.setItem("login-session", JSON.stringify({id: isUserExisit.id,
+            username: isUserExisit.name
+        }))
+
+        //redirect to home page
+        window.location.href = `../index.html`
+        
+
+    })
+</script>
+</body>
+</html>
