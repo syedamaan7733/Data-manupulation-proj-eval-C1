@@ -61,7 +61,10 @@
     border: .3px solid rgb(159, 159, 165)
 }
 
-
+/* a{
+    text-decoration: none;
+    color: black;
+} */
 /* --------------------------------------------------------------------------------- */
 /* display-product */
 #display-product{
@@ -133,6 +136,9 @@
 .rating-links{
     margin-top: 1em;
     display: flex;
+    gap: .2em;
+    text-align: center;
+    flex-direction: column;
     justify-content: space-between;
     font-weight: 500;
     font-size: 14px;
