@@ -21,7 +21,10 @@
         margin-top: 1em;
         margin-bottom: 1em;
         font-size: 3em;
-
+    a{
+        text-decoration: none;
+        color: black;
+    }
     }
     .review-maker{
       
@@ -57,8 +60,8 @@
         background-color: black;
         color:white;
         border-radius: 4px;
-        position: relative;
-        left: 47%
+        /* position: relative;
+        left: 45% */
     }
 
 
@@ -78,6 +81,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
         flex-direction: column;
         background-color: rgb(255, 245, 245);
         padding: 1em;
@@ -95,6 +99,51 @@
     .card p:last-child{
         font-weight: 500;
     }
+
+    .review-rate{
+        display: flex;
+        justify-content: space-between;
+        /* border: 1px solid red; */
+        width: 100%;
+        align-items: center;
+    }
+/* ------------------------------------------------------------------------ */
+/* ------------------------------------------------------------------------ */
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+  }
+
+  .star-rating input[type="radio"] {
+    display: none;
+  }
+
+  .star-rating label {
+    font-size: 2em;
+    color: lightgray;
+    cursor: pointer;
+  }
+
+  .star-rating input[type="radio"]:checked ~ label {
+    color: gold;
+  }
+
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: gold;
+  }
+  .edit-del{
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    gap: 1em;
+    position: absolute;
+    top: 10%;
+    left: -1%;
+    color: black;
+  }
 </style>
 </head>
 <body>
@@ -104,17 +153,40 @@
             <label for="message">Enter your review</label>
             <textarea name="message" id="message" placeholder="write your review here" required></textarea> 
             <br><br>
-            <button type="submit" id="submitReview">Submit</button>
+            <div class="review-rate">
+                <div class="star-rating">
+                    <input type="radio" id="5-stars" name="rating" value="5" />
+                    <label for="5-stars" title="5 stars">★</label>
+                    
+                    <input type="radio" id="4-stars" name="rating" value="4" />
+                    <label for="4-stars" title="4 stars">★</label>
+                    
+                    <input type="radio" id="3-stars" name="rating" value="3" />
+                    <label for="3-stars" title="3 stars">★</label>
+                    
+                    <input type="radio" id="2-stars" name="rating" value="2" />
+                    <label for="2-stars" title="2 stars">★</label>
+                    
+                    <input type="radio" id="1-star" name="rating" value="1" />
+                    <label for="1-star" title="1 star">★</label>
+                  </div>
+                <button type="submit" id="submitReview">Submit</button>
+            </div>
+            
         </form>
     </div>
     <div id="reviews-cont">
-        <h1>Loading.....</h1>
-        <!-- <div class="card">
+        <!-- <h1>Loading.....</h1> -->
+        <div class="card">
+            <div class="edit-del">
+                <a href="#"><i class="fa-solid fa-pen"></i></a>
+                <a href="#"><i class="fa-solid fa-trash"></i></a>
+            </div>
             <p class="userji">Used: 10</p>
             <p class="desc">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Doloribus, ratione repellendus? Ex, ratione. Officia modi corrupti placeat, voluptates saepe error.</p>
             <p>rating: 3/5
             </p>
-        </div> -->
+        </div>
     </div>
 <script src="../reviews.js"></script>
 </body>

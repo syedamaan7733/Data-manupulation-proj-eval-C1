@@ -1,22 +1,23 @@
 const baseURL = "https://evaluation-c3-default-rtdb.firebaseio.com/";
-
+const urlParams = new URLSearchParams(window.location.search);
+const productId = parseInt(urlParams.get("id"));
 // console.log(productId);
 
 // fetching data
-fetchReviews();
+// fetchReviews();
 
 async function fetchReviews() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const productId = parseInt(urlParams.get("id"));
   const requestOpt = {
     method: "GET",
     redirect: "follow",
   };
   const response = await fetch(`${baseURL}reviews.json`, requestOpt);
   let data = await response.json();
-  data = data.filter((prod) => prod.productId === productId);
+  data = Object.entries(data);
+  const res = data.filter(([id, review]) => review.productId === productId);
+  // console.log(res);
 
-  displayReview(data);
+  displayReview(res);
 }
 
 function displayReview(data) {
@@ -25,8 +26,8 @@ function displayReview(data) {
 
   // atta=ching data to the cards
 
-  data.forEach((review) => {
-    console.log(review);
+  data.forEach(([id, review]) => {
+    // console.log(review);
 
     reviewContainer.innerHTML += `
       <div class="card">
@@ -38,3 +39,52 @@ function displayReview(data) {
     `;
   });
 }
+
+// ------------------------------------------------------------------
+// for creating a new review on submission of the form
+const submitReview = document.getElementById("create-review");
+
+// yaar bohot pareshan krra yeh
+const starRate = document.querySelectorAll(' .star-rating input[type="radio"]');
+starRate.forEach((input) => {
+  input.addEventListener("change", () => {
+    localStorage.setItem("star", input.value);
+  });
+});
+
+submitReview.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const reviewContent = document.getElementById("message");
+  const review = {
+    userId: JSON.parse(localStorage.getItem("login-session")).username,
+    productId: productId,
+    content: reviewContent.value,
+    rating: localStorage.getItem("star"),
+  };
+  createReview(review);
+  localStorage.removeItem("star");
+  fetchReviews();
+});
+
+async function createReview(review) {
+  try {
+    const myHeader = new Headers();
+    myHeader.append("Content-Type", "application/json");
+
+    const requestOption = {
+      method: "POST",
+      header: myHeader,
+      body: JSON.stringify(review),
+      redirect: "follow",
+    };
+
+    const response = await fetch(`${baseURL}reviews.json`, requestOption);
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+}
+// console.log(arr);
+
+// createReview();
